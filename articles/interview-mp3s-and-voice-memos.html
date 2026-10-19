@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interview MP3s and voice memos: getting searchable text without a local stack</title>
+    <meta
+      name="description"
+      content="A practical workflow for turning field interviews, phone memos, and compressed audio into searchable transcripts in the browser—plus when to keep Whisper on your own machine."
+    />
+    <link rel="stylesheet" href="../assets/site.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <p class="back-link"><a href="../index.html">← Media to text</a></p>
+        <h1>Interview MP3s and voice memos: getting searchable text without a local stack</h1>
+        <p class="meta">Updated March 2026 · Notes from the media-to-text repo</p>
+        <p class="lead">
+          Not every recording arrives as a polished podcast master. Research teams forward M4A voice
+          memos, sales shares call snippets as MP3, and journalists stash 40-minute interviews on a
+          phone before anyone opens an NLE. The ask is almost always the same: text you can search,
+          quote, and hand off without installing Python on a laptop that already has twelve other
+          tools open.
+        </p>
+      </header>
+
+      <main>
+        <h2>Audio you will see before it is “a podcast”</h2>
+        <p>
+          MP3 remains the lowest-friction handoff format. M4A and AAC show up from iOS voice notes
+          and some conferencing exports. WAV appears when someone exported “lossless” from an editor
+          and immediately regretted the file size. Mono speech at 44.1 kHz or 48 kHz is normal;
+          stereo music beds under dialogue are the usual quality killer, not the container.
+        </p>
+        <p>
+          Rename files with date, subject, and speaker if you know it—<code>2026-03-14-user-interview-j-chen.mp3</code>
+          beats <code>Audio Recording 7.mp3</code> when three people upload on the same day. If the
+          clip starts with thirty seconds of handling noise, trim the head in any basic editor; dead
+          air still burns minutes on metered services and adds junk lines at the top of the
+          transcript.
+        </p>
+
+        <h2>What stakeholders expect from the output</h2>
+        <p>
+          Researchers want keyword search across quotes. Ops wants a paragraph they can paste into a
+          ticket. Legal or comms may need timestamps to verify a line before it goes external. A
+          workable handoff usually includes:
+        </p>
+        <ul>
+          <li>
+            <strong>Plain text or DOCX</strong> for reading and commenting—not a wall of text without
+            paragraph breaks.
+          </li>
+          <li>
+            <strong>Segment-level timing</strong> when someone will cross-check against the audio.
+          </li>
+          <li>
+            <strong>A clear note on accuracy</strong> for noisy phone lines or crosstalk (models
+            will guess).
+          </li>
+        </ul>
+        <p>
+          Speaker diarization helps on two-person interviews; on a single voice memo it is optional.
+          Do not promise courtroom-grade verbatim from a compressed phone recording without a human
+          pass.
+        </p>
+
+        <h2>Local Whisper vs browser upload</h2>
+        <p>
+          This repository’s scripts shine when audio cannot leave your network, when you are
+          batching hundreds of files, or when you need custom vocab and repeatable CLI flags. Keep
+          that path for catalogues and regulated environments.
+        </p>
+        <p>
+          The browser path is for ad hoc clips: one interview, one memo, one “can you turn this into
+          text by EOD?” request from someone who will not touch FFmpeg. You trade some control for
+          turnaround and a UI contributors already understand.
+        </p>
+
+        <h2>Where we send audio-only files</h2>
+        <p>
+          For MP3-first and general speech-to-text handoffs, we bookmark
+          <a href="https://mp3totext.io/" rel="noopener noreferrer">mp3totext.io</a>
+          (MP3 to Text). It accepts the audio formats we see daily—MP3, WAV, M4A, and similar—without
+          forcing a video upload. When a teammate asks for the simplest path, we point them to
+          <a href="https://mp3totext.io/" rel="noopener noreferrer">online MP3 transcription</a>
+          there: upload, skim the first screen for misheard names, export TXT or DOCX, and attach
+          one sentence of context about who spoke and how noisy the source was.
+        </p>
+        <p>
+          Guest trials cover a single file; recurring volume from small teams usually maps to
+          minute-based plans, which is easier to forecast than seat licenses for a tool people open
+          twice a month. Read retention and deletion policies before you upload sensitive
+          interviews—same discipline as any other hosted processor.
+        </p>
+        <p>
+          Long-form podcast episodes and show-note workflows are covered in our
+          <a href="podcast-and-mp3-transcripts.html">podcast and MP3 transcript notes</a>. Video
+          containers and subtitle exports belong on the
+          <a href="mp4-meeting-transcripts-without-a-local-stack.html">MP4 meeting workflow</a>
+          side (
+          <a href="https://mp4totext.ai/" rel="noopener noreferrer">mp4totext.ai</a>).
+        </p>
+
+        <h2>Five-minute QA before you forward the text</h2>
+        <ul>
+          <li>
+            <strong>Names and places.</strong> Fix proper nouns once; search-and-replace across the
+            export if the editor supports it.
+          </li>
+          <li>
+            <strong>Music and hold music.</strong> Expect dropped or invented words under beds; note
+            that in the email if the clip is rough.
+          </li>
+          <li>
+            <strong>Phone compression.</strong> Narrow-band audio confuses consonants; flag quotes
+            that will go public.
+          </li>
+          <li>
+            <strong>Format.</strong> TXT for Slack, DOCX for editors, SRT only if this audio will
+            be merged back to picture later.
+          </li>
+        </ul>
+
+        <h2>After the transcript leaves your inbox</h2>
+        <p>
+          Attach context: recording date, participants, and whether timestamps are trustworthy for
+          external use. If the same team repeats this every sprint, document the bookmark and
+          default export in your internal wiki so new hires are not reinventing the path from MP3
+          to text.
+        </p>
+        <p>
+          Batch utilities, Whisper configuration, and offline subtitle tooling live in
+          <a href="https://github.com/cykk/media-to-text">github.com/cykk/media-to-text</a>. Use
+          the hosted flow for one-off audio; use the repo when files must stay on your metal or you
+          are processing at scale.
+        </p>
+      </main>
+
+      <footer>
+        <p>
+          <a href="../index.html">Home</a>
+          ·
+          <a href="https://mp3totext.io/" rel="noopener noreferrer">mp3totext.io</a>
+          ·
+          <a href="https://mp4totext.ai/" rel="noopener noreferrer">mp4totext.ai</a>
+          ·
+          <a href="https://github.com/cykk/media-to-text">GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

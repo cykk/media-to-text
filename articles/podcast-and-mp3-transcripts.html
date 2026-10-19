@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Podcast and MP3 transcripts without standing up a local stack</title>
+    <meta
+      name="description"
+      content="How we turn voice memos, podcast exports, and WAV/M4A files into searchable text in the browser—and when to keep processing on your own machine."
+    />
+    <link rel="stylesheet" href="../assets/site.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <p class="back-link"><a href="../index.html">← Media to text</a></p>
+        <h1>Podcast and MP3 transcripts without standing up a local stack</h1>
+        <p class="meta">Updated March 2026 · Notes from the media-to-text repo</p>
+        <p class="lead">
+          Video gets most of the attention in meeting workflows, but half our requests arrive as
+          MP3, M4A, or WAV—podcast cuts, interview audio, and phone voice memos. The output needs
+          are the same: searchable text, optional timestamps, and an export someone can quote from.
+        </p>
+      </header>
+
+      <main>
+        <h2>Files that show up in audio-only requests</h2>
+        <p>
+          Podcast hosts export MP3 or M4A from their DAW or hosting provider. Journalists receive
+          compressed audio from sources. Ops teams forward WhatsApp or iPhone voice notes converted
+          to M4A. None of these need a video pipeline; uploading them through a video-first tool
+          works but feels clumsy when the UI is built around drag-and-drop MP4.
+        </p>
+        <p>
+          Normalise loudness if you can (even −16 LUFS as a rough target helps recognition on quiet
+          speech). Split episodes longer than your provider’s per-file cap before upload. Keep the
+          original filename with episode number and guest name—downstream search will thank you.
+        </p>
+
+        <h2>Browser path for MP3 and podcast audio</h2>
+        <p>
+          We send audio-only work to
+          <a href="https://mp3totext.io/">MP3 to Text (mp3totext.io)</a> when the file is MP3, WAV,
+          M4A, FLAC, or similar—no video track, no subtitle timeline to worry about. The flow matches
+          what non-technical contributors already understand: upload, wait, skim, export to TXT or
+          DOCX, paste quotes into a doc. For show notes, timestamps matter; for a quick memo,
+          plain text is enough.
+        </p>
+        <p>
+          That site is our counterpart to the MP4 bookmark (
+          <a href="https://mp4totext.ai/">mp4totext.ai</a> for video and mixed libraries). Same
+          family of product decisions—browser-only, minute-based pricing at scale, guest tryouts for
+          a single file—but the defaults assume audio producers rather than Zoom exports.
+        </p>
+
+        <h2>When to keep Whisper local instead</h2>
+        <p>
+          Batch transcribing an entire podcast back catalogue, fine-tuning vocabulary for names, or
+          keeping raw audio inside a VPC still belongs in this repository’s scripts. The hosted
+          tools are for turnaround: one episode, one interview, one voice note someone needs
+          tomorrow.
+        </p>
+
+        <h2>Quick QA before you forward the transcript</h2>
+        <ul>
+          <li>Scan the first minute of text for garbage homophones on brand names.</li>
+          <li>If music beds sit under speech, expect a few dropped words—note that in the handoff.</li>
+          <li>Export format: TXT for Slack, DOCX for editors, SRT only if this audio will be merged back to video.</li>
+        </ul>
+
+        <h2>Related notes</h2>
+        <p>
+          For interview clips and one-off voice memos (not full episodes), see
+          <a href="interview-mp3s-and-voice-memos.html">interview MP3s and voice memos</a>. When
+          the deliverable is an MP4 or screen recording, use the
+          <a href="mp4-meeting-transcripts-without-a-local-stack.html">MP4 meeting workflow</a>
+          write-up instead—it covers subtitle exports and the
+          <a href="https://mp4totext.ai/">convert mp4 to text quickly</a> bookmark we share with
+          PMs.
+        </p>
+      </main>
+
+      <footer>
+        <p>
+          <a href="../index.html">Home</a>
+          ·
+          <a href="https://mp3totext.io/">mp3totext.io</a>
+          ·
+          <a href="https://mp4totext.ai/">mp4totext.ai</a>
+          ·
+          <a href="https://github.com/cykk/media-to-text">GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

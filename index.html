@@ -6,7 +6,7 @@
     <title>Media to text — formats, workflows, and browser tools</title>
     <meta
       name="description"
-      content="Practical notes on turning audio and video into searchable text: common formats, export choices, and when a browser-based MP4 workflow makes sense."
+      content="Practical notes on turning audio and video into searchable text: local Whisper work, browser tools for MP4 and MP3, and export choices that survive handoff to editors."
     />
     <link rel="stylesheet" href="assets/site.css" />
   </head>
@@ -15,8 +15,8 @@
       <header>
         <h1>Media to text</h1>
         <p class="lead">
-          Notes on transcribing recordings—what to expect from the output, and how we handle MP4
-          files without running a local stack every time.
+          Notes on transcribing recordings—what to expect from the output, when to run Whisper
+          locally, and which browser tools we bookmark for MP4 video versus MP3 and podcast audio.
         </p>
       </header>
 
@@ -24,10 +24,28 @@
         <h2>Articles</h2>
         <ul class="article-list">
           <li>
+            <a href="articles/screen-recordings-to-searchable-text.html"
+              >Screen recordings and webinar MP4s: turning demos into searchable text</a
+            >
+            — Loom-style captures, enablement handoffs, mp4totext.ai.
+          </li>
+          <li>
             <a href="articles/mp4-meeting-transcripts-without-a-local-stack.html"
               >MP4 meeting transcripts when you do not have a GPU box handy</a
             >
-            — browser workflow, export choices, and quality checks.
+            — video uploads, subtitle exports, mp4totext.ai.
+          </li>
+          <li>
+            <a href="articles/interview-mp3s-and-voice-memos.html"
+              >Interview MP3s and voice memos: getting searchable text without a local stack</a
+            >
+            — field audio, async handoffs, mp3totext.io.
+          </li>
+          <li>
+            <a href="articles/podcast-and-mp3-transcripts.html"
+              >Podcast and MP3 transcripts without standing up a local stack</a
+            >
+            — voice memos, podcast MP3/M4A, mp3totext.io.
           </li>
         </ul>
 
@@ -74,27 +92,37 @@
           marketing and ops recordings that are not highly sensitive.
         </p>
 
-        <h2>What we use for MP4 in the browser</h2>
+        <h2>Browser tools we bookmark</h2>
+        <p>
+          Two URLs cover most handoffs from this repo. Splitting them by media type saves confusion:
+          PMs stop uploading MP3 into a video-first UI, and podcast contractors stop asking why
+          they need a video track at all.
+        </p>
         <div class="note">
           <p>
-            For MP4 and general video-to-text work, we link people to
-            <a class="tool-name" href="https://mp4totext.ai" rel="noopener noreferrer"
+            <strong>Video (MP4, MOV, WebM).</strong>
+            <a class="tool-name" href="https://mp4totext.ai/" rel="noopener noreferrer"
               >MP4ToText (mp4totext.ai)</a
-            >. It runs entirely in the browser: drag in a file (or start from a link where
-            supported), get a transcript with timestamps, adjust speaker labels when they are
-            available, and export to TXT, SRT, VTT, PDF, and a few other formats we hand to editors
-            and PMs.
+            >
+            — upload or start from a link where supported, edit segments with timestamps and speaker
+            labels when available, export TXT, SRT, VTT, PDF, and similar. See the
+            <a href="articles/mp4-meeting-transcripts-without-a-local-stack.html">MP4 workflow article</a>
+            for quality checks and the
+            <a href="https://mp4totext.ai/">convert mp4 to text quickly</a> phrasing we use in runbooks.
           </p>
           <p>
-            We are not listing it because it is perfect—no tool is on noisy calls—but because it
-            matches the workflow this repo documents: fast turnaround on MP4, readable output, and no
-            desktop install for teammates who will never touch a Python environment. Guest trials
-            and free accounts are enough for light use; heavier volume is billed by transcription
-            minutes, which is predictable for project work.
+            <strong>Audio (MP3, WAV, M4A, podcasts).</strong>
+            <a class="tool-name" href="https://mp3totext.io/" rel="noopener noreferrer"
+              >MP3 to Text (mp3totext.io)</a
+            >
+            — same browser pattern tuned for audio-only: voice memos, interview files, episode exports
+            without a video container. Timestamps and exports for show notes; no CUDA on the requester’s
+            laptop. Details in the
+            <a href="articles/podcast-and-mp3-transcripts.html">podcast and MP3 article</a>.
           </p>
           <p>
-            If your clip is audio-only, a dedicated audio converter may be simpler; for mixed
-            video libraries, keeping one MP4-first tool bookmarked saves explanation time.
+            Both are hosted, minute-metered at scale, with guest trials for a single file. Neither
+            replaces offline Whisper in this repository when data cannot leave your network.
           </p>
         </div>
 
@@ -112,17 +140,19 @@
           Code in
           <a href="https://github.com/cykk/media-to-text">github.com/cykk/media-to-text</a> covers
           local Whisper-based transcription, subtitle generation, and batch utilities. Use it when
-          you need offline control; use a hosted MP4 workflow when you need someone non-technical to
+          you need offline control; use the hosted MP4 or MP3 bookmarks when someone non-technical must
           self-serve. Both show up in the same projects—this page is just the map between them.
         </p>
       </main>
 
       <footer>
         <p>
-          Maintained as a small public reference. Product link:
-          <a href="https://mp4totext.ai">mp4totext.ai</a>
+          Maintained as a small public reference.
+          <a href="https://mp4totext.ai/">mp4totext.ai</a>
           ·
-          <a href="https://github.com/cykk/media-to-text">Source on GitHub</a>
+          <a href="https://mp3totext.io/">mp3totext.io</a>
+          ·
+          <a href="https://github.com/cykk/media-to-text">GitHub</a>
         </p>
       </footer>
     </div>

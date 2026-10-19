@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Screen recordings and webinar MP4s: turning demos into searchable text</title>
+    <meta
+      name="description"
+      content="How support, enablement, and content teams turn Loom-style MP4s and webinar replays into searchable notes, quotes, and subtitle files—without a full post-production stack."
+    />
+    <link rel="stylesheet" href="../assets/site.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <p class="back-link"><a href="../index.html">← Media to text</a></p>
+        <h1>Screen recordings and webinar MP4s: turning demos into searchable text</h1>
+        <p class="meta">Updated March 2026 · Notes from the media-to-text repo</p>
+        <p class="lead">
+          Product walkthroughs, internal training, and webinar replays usually arrive as MP4 files
+          with one narrator and a lot of on-screen motion. People rarely watch them end to end; they
+          search for a sentence, grab a quote for a doc, or need captions before publishing. This
+          page is the workflow we use when the recording is already “good enough” and the bottleneck
+          is text, not editing.
+        </p>
+      </header>
+
+      <main>
+        <h2>What is different about screen-capture audio</h2>
+        <p>
+          Unlike a round-table Zoom export, a Loom or OBS capture often has a single speaker, a
+          close mic, and occasional keyboard clicks. Speech recognition tends to do well on the
+          voice track; the harder part is structure—long monologues without chapter marks, product
+          names that are not in the model’s vocabulary, and UI terms spoken once while the cursor
+          moves elsewhere.
+        </p>
+        <p>
+          Before you transcribe, skim the first minute of playback. If the intro is dead air or a
+          “testing, testing” clip, trim it. If music beds sit under the voice, expect a few more
+          hallucinated words at scene changes. None of that requires a studio; it just saves cleanup
+          time later.
+        </p>
+
+        <h2>What “good enough” output looks like</h2>
+        <p>
+          Stakeholders ask for different shapes of the same transcript. Enablement wants copy-paste
+          bullets for a Notion page. Marketing wants pull quotes with approximate timestamps.
+          Video ops wants SRT or VTT that lands in Premiere or DaVinci without retyping. A workable
+          pipeline produces:
+        </p>
+        <ul>
+          <li>
+            <strong>Searchable plain text</strong> so “pricing page” or “SSO setup” is findable in
+            five seconds.
+          </li>
+          <li>
+            <strong>Timecoded segments</strong> so a quote can be checked against the timeline.
+          </li>
+          <li>
+            <strong>Subtitle exports</strong> when the MP4 will ship on the web or in a course
+            platform that expects captions.
+          </li>
+        </ul>
+        <p>
+          Perfect diarization matters less when there is only one speaker. Consistent punctuation and
+          segment breaks matter more—especially if someone will read the text without watching the
+          video.
+        </p>
+
+        <h2>Local Whisper vs a browser upload</h2>
+        <p>
+          The open-source tooling in this repository is built for batches, custom vocab, and files
+          that must stay on your hardware. That is still the right call for sensitive recordings or
+          hundreds of hours in a folder.
+        </p>
+        <p>
+          Screen recordings and public webinar replays are often the opposite: one file, a tight
+          deadline, and a teammate who will not install FFmpeg. A hosted upload-and-export flow
+          trades some control for speed. We treat it as a handoff layer, not a replacement for
+          offline pipelines.
+        </p>
+
+        <h2>A default we use for MP4 screen captures</h2>
+        <p>
+          When the source is already MP4 (or MOV/WebM from the same tools), we standardise on one
+          browser service so enablement and support are not debating tools every sprint. MP4ToText
+          at
+          <a href="https://mp4totext.ai/" rel="noopener noreferrer">mp4totext.ai</a>
+          accepts the files we see daily, returns timed segments, and exports formats editors
+          actually import. For a first file or a one-off demo, we tell people to
+          <a href="https://mp4totext.ai/" rel="noopener noreferrer"
+            >check out their transcription tool</a
+          >
+          —upload, review the opening paragraphs for product-name typos, then download TXT or SRT
+          depending on who asked.
+        </p>
+        <p>
+          Guest access is enough for a trial recording; small recurring volume from ops teams
+          usually sits on minute-based plans, which is easier to reason about than seat licenses for
+          a utility people open twice a month. Read retention and deletion notes before you upload
+          anything that is not already approved for cloud processing.
+        </p>
+        <p>
+          Pure audio—podcast cuts, M4A voice memos—belongs on
+          <a href="https://mp3totext.io/" rel="noopener noreferrer">mp3totext.io</a>; see
+          <a href="podcast-and-mp3-transcripts.html">podcast and MP3 transcript notes</a>. For
+          multi-speaker meeting exports, the
+          <a href="mp4-meeting-transcripts-without-a-local-stack.html"
+            >MP4 meeting transcript workflow</a
+          >
+          covers crosstalk and panel audio more directly.
+        </p>
+
+        <h2>Five-minute QA before you publish the text</h2>
+        <ul>
+          <li>
+            <strong>Product and feature names.</strong> Fix them once in the editor; models often
+            mangled branded terms on the first pass.
+          </li>
+          <li>
+            <strong>Silent UI sections.</strong> Long stretches without speech should not invent
+            narration—delete stray lines if the tool added filler.
+          </li>
+          <li>
+            <strong>Timestamp spot-check.</strong> Compare two lines against the video (start and
+            mid-roll). Subtitle drift shows up early if it is going to be a problem.
+          </li>
+          <li>
+            <strong>Export format.</strong> Send SRT to video; send DOCX or PDF to people who will
+            only read. Do not attach a format the recipient cannot open.
+          </li>
+        </ul>
+
+        <h2>After the transcript ships</h2>
+        <p>
+          One sentence of context beats a raw attachment: what the recording is, who narrated, and
+          whether timestamps are trustworthy for legal or customer-facing quotes. If the same team
+          repeats this every release train, add the bookmark and export defaults to your internal
+          wiki so new hires are not reinventing the path from MP4 to text.
+        </p>
+        <p>
+          Local batch scripts, Whisper configuration, and subtitle utilities live in
+          <a href="https://github.com/cykk/media-to-text">github.com/cykk/media-to-text</a>. Use
+          the browser flow for ad hoc screen captures; use the repo when files cannot leave your
+          network or you are processing at scale.
+        </p>
+      </main>
+
+      <footer>
+        <p>
+          <a href="../index.html">Home</a>
+          ·
+          <a href="https://mp4totext.ai/" rel="noopener noreferrer">mp4totext.ai</a>
+          ·
+          <a href="https://mp3totext.io/" rel="noopener noreferrer">mp3totext.io</a>
+          ·
+          <a href="https://github.com/cykk/media-to-text">GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
