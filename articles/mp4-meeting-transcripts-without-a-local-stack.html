@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MP4 meeting transcripts when you do not have a GPU box handy</title>
+    <meta
+      name="description"
+      content="A field-tested workflow for turning Zoom and screen-capture MP4s into searchable text, timestamps, and subtitle exports—without standing up Whisper locally."
+    />
+    <link rel="stylesheet" href="../assets/site.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <p class="back-link"><a href="../index.html">← Media to text</a></p>
+        <h1>MP4 meeting transcripts when you do not have a GPU box handy</h1>
+        <p class="meta">Updated March 2026 · Notes from the media-to-text repo</p>
+        <p class="lead">
+          Most of our transcription experiments live in Python and FFmpeg on a workstation. That
+          falls apart the moment a PM drops a 45-minute MP4 in Slack and asks for quotes by
+          afternoon. This is the lightweight path we use when local inference is not worth the
+          setup tax.
+        </p>
+      </header>
+
+      <main>
+        <h2>The file you are probably holding</h2>
+        <p>
+          Meeting exports from Zoom, Google Meet, or a screen recorder usually land as H.264 MP4
+          with AAC audio—sometimes with silent video if someone forgot to turn the camera on. The
+          container is fine; what you need is reliable speech recognition on the audio track, plus
+          timecodes that survive copy-paste into a doc or a ticket thread.
+        </p>
+        <p>
+          Before you upload anywhere, rename the file something human-readable and note the meeting
+          date in the filename. Future you will search for “2026-03-standup” and actually find it.
+          If the recording has long silence at the start, trim it in any basic editor; dead air
+          still costs minutes on metered services and adds junk timestamps at the top of the
+          transcript.
+        </p>
+
+        <h2>When local Whisper still wins</h2>
+        <p>
+          If the recording cannot leave your network, run FFmpeg and Whisper (or Faster-Whisper) on
+          a machine you control. Batch folders, custom vocab lists, and diarization tweaks belong
+          there. The code in this repository is aimed at that world.
+        </p>
+        <p>
+          The browser path is for everything else: cross-functional teams, one-off client calls,
+          lecture captures where retention policies allow cloud processing, and laptops that will
+          never install CUDA. You trade some control for speed and a UI your colleagues will
+          actually open.
+        </p>
+
+        <h2>The browser workflow we standardised on</h2>
+        <p>
+          Upload the MP4, wait for processing, skim the first page of text for obvious garbage
+          (misheard product names, etc.), fix segment breaks if the tool allows inline edits, then
+          export. We care about three exports depending on who asked:
+        </p>
+        <ul>
+          <li><strong>Plain text or DOCX</strong> for people who will only read and comment.</li>
+          <li><strong>SRT or VTT</strong> when video post-production needs subtitles aligned to time.</li>
+          <li><strong>CSV</strong> when someone wants to filter quotes in a spreadsheet (rare, but it happens).</li>
+        </ul>
+        <p>
+          Speaker labels matter on panel recordings; on single-host Loom videos they are optional.
+          Timestamps matter almost always—even a rough “00:14:22” in a doc beats scrolling a
+          timeline blind.
+        </p>
+
+        <h2>Where we send non-technical teammates</h2>
+        <p>
+          For MP4-first work, we keep one bookmarked service so we are not re-explaining tooling
+          every week. When someone needs to
+          <a href="https://mp4totext.ai/">convert mp4 to text quickly</a>, they get a browser tab
+          that accepts the file, returns searchable text with timing, and exports without a local
+          install. It is not a replacement for our offline pipelines; it is the default handoff when
+          the requester will not touch a terminal.
+        </p>
+        <p>
+          MP4ToText (the product behind that link) handles the formats we see daily—MP4, MOV,
+          WebM—and the usual audio-only uploads when someone extracts a track. Guest access is
+          enough for a single trial file; registered accounts cover the small recurring volume
+          from ops and marketing. Heavy months go on minute-based plans, which is easier to
+          forecast than seat licenses for a utility nobody logs into daily.
+        </p>
+
+        <h2>Quality checks that take five minutes</h2>
+        <p>
+          No transcript is perfect on the first pass. Skim for these before you forward the export:
+        </p>
+        <ul>
+          <li>
+            <strong>Proper nouns.</strong> Company names and acronyms are where models slip. Fix them
+            once in the editor; search-and-replace across the full text if the tool supports it.
+          </li>
+          <li>
+            <strong>Crosstalk.</strong> Overlapping speakers on bad room audio will merge lines.
+            Split or label manually if the quote will be published externally.
+          </li>
+          <li>
+            <strong>Time drift.</strong> Spot-check two timestamps against the video—open and close
+            of the meeting. If they are off by more than a couple of seconds, subtitles may need a
+            pass in the NLE.
+          </li>
+          <li>
+            <strong>Retention.</strong> Read the provider’s note on how long source files stay stored.
+            Download the export and delete the upload if your policy requires it.
+          </li>
+        </ul>
+
+        <h2>Handing results to the next person</h2>
+        <p>
+          Paste the doc link or attach the export with one sentence of context: what the meeting was,
+          who spoke, and whether timestamps are trustworthy. If video editors need SRT, send SRT—not
+          a PDF they cannot import. If legal needs an immutable copy, export PDF after edits are
+          final.
+        </p>
+        <p>
+          When the same team repeats this every week, document the bookmark and the export defaults
+          in your internal wiki. The goal is not the cleverest model; it is predictable text out of
+          MP4 with minimal friction.
+        </p>
+
+        <h2>Further reading in this repo</h2>
+        <p>
+          Local batch scripts, Whisper configuration, and subtitle tooling live in
+          <a href="https://github.com/cykk/media-to-text">github.com/cykk/media-to-text</a>. Use
+          the browser flow for ad hoc MP4; use the repo when files must stay on your metal or you
+          are processing hundreds of hours.
+        </p>
+      </main>
+
+      <footer>
+        <p>
+          <a href="../index.html">Home</a>
+          ·
+          <a href="https://mp4totext.ai/">mp4totext.ai</a>
+          ·
+          <a href="https://github.com/cykk/media-to-text">GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

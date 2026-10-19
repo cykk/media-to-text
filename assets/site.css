@@ -102,3 +102,38 @@ footer {
 footer a {
   color: var(--muted);
 }
+
+.back-link {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+}
+
+.back-link a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.back-link a:hover {
+  color: var(--link);
+  text-decoration: underline;
+}
+
+.meta {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.article-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-list li {
+  margin-bottom: 0.65rem;
+}
+
+.article-list a {
+  font-weight: 550;
+}
