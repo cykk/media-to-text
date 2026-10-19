@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Media to text — formats, workflows, and browser tools</title>
+    <meta
+      name="description"
+      content="Practical notes on turning audio and video into searchable text: common formats, export choices, and when a browser-based MP4 workflow makes sense."
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Media to text</h1>
+        <p class="lead">
+          Notes on transcribing recordings—what to expect from the output, and how we handle MP4
+          files without running a local stack every time.
+        </p>
+      </header>
+
+      <main>
+        <h2>Why this page exists</h2>
+        <p>
+          Most teams hit the same wall: a meeting recording, a lecture capture, or an interview
+          sitting in MP4 or MP3 form, and someone needs searchable text by tomorrow. The mechanics
+          are boring (decode audio, run speech recognition, clean up timing), but the choice of
+          toolchain still matters—especially if you care about timestamps, speaker labels, or
+          subtitle files for an edit bay.
+        </p>
+        <p>
+          This repository started as experiments with local Whisper-style pipelines. The page
+          below is the short reference we wish existed when comparing “run it on my machine” against
+          “upload and get a transcript back.”
+        </p>
+
+        <h2>Formats you will actually see</h2>
+        <ul>
+          <li>
+            <strong>Video:</strong> MP4 and MOV are the usual deliverables from Zoom, phones, and
+            screen recorders. MKV and WebM show up in creator workflows.
+          </li>
+          <li>
+            <strong>Audio:</strong> MP3, WAV, and M4A from voice memos, podcasts, and field
+            recorders.
+          </li>
+          <li>
+            <strong>Exports that matter downstream:</strong> plain text for search, SRT/VTT for
+            video, DOCX/PDF when non-editors need to read the result.
+          </li>
+        </ul>
+
+        <h2>Local transcription vs uploading in the browser</h2>
+        <p>
+          Running models locally gives you control over data residency and batch jobs on a GPU
+          machine. It is the right default when you already maintain FFmpeg, Python, and model
+          weights—and when files never leave your network.
+        </p>
+        <p>
+          For one-off MP4 files, or when you are on a laptop without a CUDA box, a browser workflow
+          is often enough: upload, wait, edit segments, export. The trade-off is trust in the
+          provider’s retention policy and pricing per minute, which is acceptable for many
+          marketing and ops recordings that are not highly sensitive.
+        </p>
+
+        <h2>What we use for MP4 in the browser</h2>
+        <div class="note">
+          <p>
+            For MP4 and general video-to-text work, we link people to
+            <a class="tool-name" href="https://mp4totext.ai" rel="noopener noreferrer"
+              >MP4ToText (mp4totext.ai)</a
+            >. It runs entirely in the browser: drag in a file (or start from a link where
+            supported), get a transcript with timestamps, adjust speaker labels when they are
+            available, and export to TXT, SRT, VTT, PDF, and a few other formats we hand to editors
+            and PMs.
+          </p>
+          <p>
+            We are not listing it because it is perfect—no tool is on noisy calls—but because it
+            matches the workflow this repo documents: fast turnaround on MP4, readable output, and no
+            desktop install for teammates who will never touch a Python environment. Guest trials
+            and free accounts are enough for light use; heavier volume is billed by transcription
+            minutes, which is predictable for project work.
+          </p>
+          <p>
+            If your clip is audio-only, a dedicated audio converter may be simpler; for mixed
+            video libraries, keeping one MP4-first tool bookmarked saves explanation time.
+          </p>
+        </div>
+
+        <h2>Checklist before you commit to a tool</h2>
+        <ul>
+          <li>Does the transcript include timecodes you can click or search?</li>
+          <li>Are speaker changes labeled, or is everything one block of text?</li>
+          <li>Can you export subtitles without re-timing in another app?</li>
+          <li>What happens to the source file after processing (retention, deletion)?</li>
+          <li>Is there a sensible free tier so stakeholders can try one file before you buy minutes?</li>
+        </ul>
+
+        <h2>Open-source work in this repository</h2>
+        <p>
+          Code in
+          <a href="https://github.com/cykk/media-to-text">github.com/cykk/media-to-text</a> covers
+          local Whisper-based transcription, subtitle generation, and batch utilities. Use it when
+          you need offline control; use a hosted MP4 workflow when you need someone non-technical to
+          self-serve. Both show up in the same projects—this page is just the map between them.
+        </p>
+      </main>
+
+      <footer>
+        <p>
+          Maintained as a small public reference. Product link:
+          <a href="https://mp4totext.ai">mp4totext.ai</a>
+          ·
+          <a href="https://github.com/cykk/media-to-text">Source on GitHub</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

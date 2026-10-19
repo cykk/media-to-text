@@ -1,4 +1,7 @@
 # media-to-text
+
+**GitHub Pages:** [Media to text notes](https://cykk.github.io/media-to-text/) (`index.html` in repo root)
+
 # Universal AI Audio & Video Transcription Tool 🎙️🎬
 
 > **Convert speech to text, generate SRT/VTT subtitles, and transcribe MP3 & MP4 files using advanced Whisper AI models.**
