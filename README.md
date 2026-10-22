@@ -2,6 +2,16 @@
 
 **GitHub Pages:** [Media to text notes](https://cykk.github.io/media-to-text/) (`index.html` in repo root)
 
+## Read the Docs deployment
+
+The root `.readthedocs.yaml` publishes the existing static HTML site, including
+`index.html`, `articles/`, and `assets/`. No documentation generator or extra
+Python dependencies are required.
+
+Push this configuration to the GitHub branch used by your Read the Docs version,
+then trigger a new build from the project's **Builds** page. If you configured a
+custom configuration file path in Read the Docs, set it to `.readthedocs.yaml`.
+
 # Universal AI Audio & Video Transcription Tool 🎙️🎬
 
 > **Convert speech to text, generate SRT/VTT subtitles, and transcribe MP3 & MP4 files using advanced Whisper AI models.**
